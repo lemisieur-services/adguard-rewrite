@@ -13,23 +13,25 @@ inputs:
   ADGUARD_URL:
     description: "URL for your AdGuard instance (http(s)//my.instance:443). Must be accessible from your GitHub Actions runner."
     required: true
-composite:
-  - name: Mask secrets
-    run: |
-      echo "::add-mask::${{ inputs.ADGUARD_USERNAME }}"
-      echo "::add-mask::${{ inputs.ADGUARD_PASSWORD }}"
-  - name: Install python
-    uses: actions/setup-python@v5
-    with:
-      python-version: "3.12"
-  - name: Install dependencies
-    run: python3 -m pip install -r "${{ github.action_path }}/requirements.txt"
-    shell: bash
-  - name: Update DNS Rewrites
-    env:
-      ADGUARD_INSTANCE: ${{ inputs.ADGUARD_URL }}
-      ADGUARD_USERNAME: ${{ inputs.ADGUARD_USERNAME }}
-      ADGUARD_PASSWORD: ${{ inputs.ADGUARD_PASSWORD }}
-      DNS_JSON_FILE: ${{ inputs.DNS_FILE }}
+runs:
+  using: "composite"
+  steps:
+    - name: Mask secrets
+      run: |
+        echo "::add-mask::${{ inputs.ADGUARD_USERNAME }}"
+        echo "::add-mask::${{ inputs.ADGUARD_PASSWORD }}"
+    - name: Install python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install dependencies
+      run: python3 -m pip install -r "${{ github.action_path }}/requirements.txt"
+      shell: bash
+    - name: Update DNS Rewrites
+      env:
+        ADGUARD_INSTANCE: ${{ inputs.ADGUARD_URL }}
+        ADGUARD_USERNAME: ${{ inputs.ADGUARD_USERNAME }}
+        ADGUARD_PASSWORD: ${{ inputs.ADGUARD_PASSWORD }}
+        DNS_JSON_FILE: ${{ inputs.DNS_FILE }}
       run: |
         python3 "${{ github.action_path }}/update_dns.py"
