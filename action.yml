@@ -30,6 +30,6 @@ composite:
       ADGUARD_INSTANCE: ${{ inputs.ADGUARD_URL }}
       ADGUARD_USERNAME: ${{ inputs.ADGUARD_USERNAME }}
       ADGUARD_PASSWORD: ${{ inputs.ADGUARD_PASSWORD }}
-      DNS_JSON_FILE: dns_entries.json
+      DNS_JSON_FILE: ${{ inputs.DNS_FILE }}
       run: |
-        python3 update_dns.py
+        python3 "${{ github.action_path }}/update_dns.py"
