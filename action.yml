@@ -29,6 +29,7 @@ runs:
         else
           echo "python_installed=false" >> $GITHUB_ENV
         fi
+      shell: bash
     - name: Install python
       if: env.python_installed == 'false'
       uses: actions/setup-python@v5
