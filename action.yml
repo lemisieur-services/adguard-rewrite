@@ -36,3 +36,4 @@ runs:
         DNS_JSON_FILE: ${{ inputs.DNS_FILE }}
       run: |
         python3 "${{ github.action_path }}/update_dns.py"
+      shell: bash
