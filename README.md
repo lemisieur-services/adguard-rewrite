@@ -44,7 +44,7 @@ The tldr; is that you can specify a domain and an IP address to rewrite it to, p
 Here is an example of how to use this action in your workflow:
 
 > [!TIP]
-> You can find more examples in the [examples](./examples) directory, including a multi-instance deployment example.
+> You can find more examples in the [.examples](./.examples) directory, including a multi-instance deployment example.
 
 ```yaml
 name: Update AdGuard DNS Rewrites
