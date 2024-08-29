@@ -1,0 +1,35 @@
+name: AdGuard Home DNS Rewrite
+description: Action to maintain a list of DNS rewrites in AdGuard instances in sync using GitOps.
+inputs:
+  DNS_FILE:
+    description: "Path to the file (json) containing the DNS rewrites."
+    required: true
+  ADGUARD_USERNAME:
+    description: "Username for your AdGuard instance."
+    required: true
+  ADGUARD_PASSWORD:
+    description: "Password for your AdGuard instance."
+    required: true
+  ADGUARD_URL:
+    description: "URL for your AdGuard instance (http(s)//my.instance:443). Must be accessible from your GitHub Actions runner."
+    required: true
+composite:
+  - name: Mask secrets
+    run: |
+      echo "::add-mask::${{ inputs.ADGUARD_USERNAME }}"
+      echo "::add-mask::${{ inputs.ADGUARD_PASSWORD }}"
+  - name: Install python
+    uses: actions/setup-python@v5
+    with:
+      python-version: "3.12"
+  - name: Install dependencies
+    run: python3 -m pip install -r requirements.txt
+    shell: bash
+  - name: Update DNS Rewrites
+    env:
+      ADGUARD_INSTANCE: ${{ inputs.ADGUARD_URL }}
+      ADGUARD_USERNAME: ${{ inputs.ADGUARD_USERNAME }}
+      ADGUARD_PASSWORD: ${{ inputs.ADGUARD_PASSWORD }}
+      DNS_JSON_FILE: dns_entries.json
+      run: |
+        python3 update_dns.py
