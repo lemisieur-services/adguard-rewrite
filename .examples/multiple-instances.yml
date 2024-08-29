@@ -1,0 +1,31 @@
+name: Update multiple AdGuard instances
+
+on:
+  push:
+    paths:
+      - "dns_rewrites.json"
+  schedule:
+    - cron: "0 * * * *" # Runs every hour
+
+jobs:
+  update-dns:
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        instance:
+          - https:/first.adguard.instance:443
+          - http://second.adguard.instance:80
+          - http://10.5.4.3:8080
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update DNS rewrites
+        uses: lemisieur-services/adguard-rewrite@v1
+        with:
+          DNS_FILE: dns_entries.json # Path to the file (json) containing the DNS rewrites
+          ADGUARD_USERNAME: ${{ secrets.ADGUARD_USERNAME }}
+          ADGUARD_PASSWORD: ${{ secrets.ADGUARD_PASSWORD }}
+          ADGUARD_URL: ${{ matrix.instance }}
