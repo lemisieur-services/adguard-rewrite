@@ -23,7 +23,7 @@ composite:
     with:
       python-version: "3.12"
   - name: Install dependencies
-    run: python3 -m pip install -r requirements.txt
+    run: python3 -m pip install -r "${{ github.action_path }}/requirements.txt"
     shell: bash
   - name: Update DNS Rewrites
     env:
