@@ -21,7 +21,16 @@ runs:
         echo "::add-mask::${{ inputs.ADGUARD_USERNAME }}"
         echo "::add-mask::${{ inputs.ADGUARD_PASSWORD }}"
       shell: bash
+    - name: Check if Python 3.x is installed
+      id: check-python
+      run: |
+        if python3 --version | grep "Python 3."; then
+          echo "python_installed=true" >> $GITHUB_ENV
+        else
+          echo "python_installed=false" >> $GITHUB_ENV
+        fi
     - name: Install python
+      if: env.python_installed == 'false'
       uses: actions/setup-python@v5
       with:
         python-version: "3.12"
