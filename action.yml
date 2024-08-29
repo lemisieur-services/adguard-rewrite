@@ -20,6 +20,7 @@ runs:
       run: |
         echo "::add-mask::${{ inputs.ADGUARD_USERNAME }}"
         echo "::add-mask::${{ inputs.ADGUARD_PASSWORD }}"
+      shell: bash
     - name: Install python
       uses: actions/setup-python@v5
       with:
