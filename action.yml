@@ -34,7 +34,7 @@ runs:
       if: env.python_installed == 'false'
       uses: actions/setup-python@v5
       with:
-        python-version: "3.12"
+        python-version: "3.14"
     - name: Install dependencies
       run: python3 -m pip install -r "${{ github.action_path }}/requirements.txt"
       shell: bash
